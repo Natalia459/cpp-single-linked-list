@@ -27,6 +27,8 @@ void Test4() {
         assert(deletion_counter == 0);
         list.PopFront();
         assert(deletion_counter == 1);
+        list.PopFront();
+        assert(deletion_counter == 1);
     }
 
     // Доступ к позиции, предшествующей begin

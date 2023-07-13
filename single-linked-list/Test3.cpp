@@ -93,9 +93,29 @@ void Test3() {
         using IntList = SingleLinkedList<int>;
 
         assert((IntList{ 1, 2, 3 } < IntList{ 1, 2, 3, 1 }));
+        assert(!(IntList{ 1, 2, 3 } < IntList{ 1, 2, 3 }));
+        assert(!(IntList{ } < IntList{ }));
+        assert((IntList{ } < IntList{ 1 }));
+
         assert((IntList{ 1, 2, 3 } <= IntList{ 1, 2, 3 }));
+        assert((IntList{ 1, 2, 3 } <= IntList{ 1, 2, 3, 1 }));
+        assert((IntList{ 1, 2, 3 } <= IntList{ 1, 2, 4 }));
+        assert(!(IntList{ 1, 2, 4 } <= IntList{ 1, 2, 3 }));
+        assert((IntList{ } == IntList{ }));
+        assert((IntList{ } <= IntList{ 1 }));
+
         assert((IntList{ 1, 2, 4 } > IntList{ 1, 2, 3 }));
+        assert((IntList{ 1, 2, 4 } > IntList{ 1, 2, 3, 1 }));
+        assert(!(IntList{ 1, 2, 3 } > IntList{ 1, 2, 3 }));
+        assert(!(IntList{ } > IntList{ }));
+        assert(!(IntList{ } > IntList{ 1 }));
+
         assert((IntList{ 1, 2, 3 } >= IntList{ 1, 2, 3 }));
+        assert(!(IntList{ 1, 2, 3 } >= IntList{ 1, 2, 3, 1 }));
+        assert((IntList{ 1, 2, 4 } >= IntList{ 1, 2, 3 }));
+        assert(!(IntList{ 1, 2, 3 } >= IntList{ 1, 2, 4 }));
+        assert((IntList{ 1 } >= IntList{ }));
+        assert((IntList{ } >= IntList{ }));
     }
 
     // Копирование списков

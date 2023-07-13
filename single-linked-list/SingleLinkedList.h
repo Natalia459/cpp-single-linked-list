@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cassert>
 
+//спасибо за комментарии, со всем разобралась
 template <typename Type>
 class SingleLinkedList {
 	struct Node {
@@ -34,7 +35,6 @@ class SingleLinkedList {
 			node_ = other.node_;
 		}
 
-		// Чтобы компилятор не выдавал предупреждение об отсутствии оператора = при наличии
 		BasicIterator& operator=(const BasicIterator& rhs) = default;
 
 		// Категория итератора — forward iterator (итератор, который поддерживает операции инкремента и многократное разыменование)
@@ -56,7 +56,7 @@ class SingleLinkedList {
 
 		// Оператор проверки итераторов на неравенство
 		[[nodiscard]] bool operator!=(const BasicIterator<const Type>& rhs) const noexcept {
-			return !(node_ == rhs.node_);
+			return !(*this == rhs);
 		}
 
 		// Оператор сравнения итераторов (в роли второго аргумента итератор)
@@ -66,7 +66,7 @@ class SingleLinkedList {
 
 		// Оператор проверки итераторов на неравенство
 		[[nodiscard]] bool operator!=(const BasicIterator<Type>& rhs) const noexcept {
-			return !(node_ == rhs.node_);
+			return !(*this == rhs);
 		}
 
 		// Оператор прединкремента. После его вызова итератор указывает на следующий элемент списка
@@ -132,7 +132,6 @@ public:
 		return *this;
 	}
 
-	// Возвращает количество элементов в списке за время O(1)
 	[[nodiscard]] size_t GetSize() const noexcept {
 		return size_;
 	}
@@ -141,31 +140,26 @@ public:
 		return GetSize();
 	}
 
-	// Сообщает, пустой ли список за время O(1)
 	[[nodiscard]] bool IsEmpty() const noexcept {
 		return size_ == 0;
 	}
 
-	// Вставляет элемент value в начало списка за время O(1)
 	void PushFront(const Type& value) {
 		head_.next_node = new Node(value, head_.next_node);
 		++size_;
 	}
 
-	// Очищает список за время O(N)
 	void Clear() noexcept {
 		Node* prev_node = nullptr;
 		for (; head_.next_node != nullptr; prev_node = head_.next_node, head_.next_node = prev_node->next_node) {
 			if (prev_node != nullptr) {
 				delete prev_node;
-				--size_;
 			}
 		}
 		delete prev_node;
-		--size_;
+		size_ = 0;
 	}
 
-	// Обменивает содержимое списков за время O(1)
 	void swap(SingleLinkedList& other) noexcept {
 		if (this != &other) {
 			std::swap(other.head_.next_node, head_.next_node);
@@ -320,15 +314,15 @@ bool operator<(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& 
 
 template <typename Type>
 bool operator<=(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs) {
-	return (lhs < rhs) || (lhs == rhs);
+	return !(lhs < rhs);
 }
 
 template <typename Type>
 bool operator>(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs) {
-	return !(lhs < rhs) && (lhs != rhs);
+	return !(lhs < rhs);
 }
 
 template <typename Type>
 bool operator>=(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs) {
-	return !(lhs < rhs) || (lhs == rhs);
+	return !(lhs < rhs);
 }
